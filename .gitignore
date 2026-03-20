@@ -48,7 +48,7 @@ desktop.ini
 *.bin
 
 # !! EXCEPTION — allow the pre-built FAISS index !!
-!Data-Engineering/data/faiss_multi_provider_index.bin
+!Policy/Main/Test_Docs/faiss_multi_provider_index.bin
 
 # ── Large data files ───────────────────────────────────────
 *.jsonl
