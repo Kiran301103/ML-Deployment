@@ -1,3 +1,70 @@
+# ── Python ────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Virtual environments ───────────────────────────────────
+venv/
+.venv/
+env/
+.env/
+ENV/
+
+# ── Environment / secrets ──────────────────────────────────
+.env
+.env.*
+*.env
+!.env.example
+
+# ── OS files ───────────────────────────────────────────────
 .DS_Store
-\venv
-\__pycache__
+Thumbs.db
+desktop.ini
+
+# ── VSCode ─────────────────────────────────────────────────
+.vscode/
+*.code-workspace
+
+# ── Jupyter ────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ── Large model / binary files ─────────────────────────────
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.pkl
+*.pickle
+*.h5
+
+# Block .bin files (too large for GitHub)
+*.bin
+
+# !! EXCEPTION — allow the pre-built FAISS index !!
+!Data-Engineering/data/faiss_multi_provider_index.bin
+
+# ── Large data files ───────────────────────────────────────
+*.jsonl
+!Data-Engineering/data/rag_chunks.jsonl
+!Data-Engineering/data/MASTER_STRUCTURED_SUPERSET_2026-1.jsonl
+!Data-Engineering/data/metadata.json
+
+# ── Streamlit ──────────────────────────────────────────────
+.streamlit/secrets.toml
+
+# ── Logs ───────────────────────────────────────────────────
+*.log
+logs/
+
+# ── Temp files ─────────────────────────────────────────────
+*.tmp
+*.temp
+tmp/
+temp/
