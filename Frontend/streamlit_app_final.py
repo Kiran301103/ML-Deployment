@@ -1,5 +1,28 @@
+# Copyright 2026 Ashwin Prasanth, Konstantinos Sklavenitis, Kiran, Charalampos Theodoridis
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
 import os
 os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
+
+# =============================================================================
+# PATH FIX — must happen before ANY import from the project
+# Adds the project root (parent of Frontend/) to sys.path so that
+# `Policy`, `Data-Engineering`, etc. are all reachable.
+# =============================================================================
+import sys
+_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if _ROOT not in sys.path:
+    sys.path.insert(0, _ROOT)
+# =============================================================================
 
 import base64
 import tempfile
@@ -24,10 +47,22 @@ def load_engine():
     )
     return smart_search, extract_user_profile, CONDITION_MAP, URL_METADATA_PATH
 
-smart_search, extract_user_profile, CONDITION_MAP, URL_METADATA_PATH = load_engine()
+# Surface any import error clearly in the UI instead of crashing silently
+try:
+    smart_search, extract_user_profile, CONDITION_MAP, URL_METADATA_PATH = load_engine()
+except Exception as _engine_err:
+    import traceback
+    st.error(
+        f"❌ **Failed to load the RAG engine.**\n\n"
+        f"`{_engine_err}`\n\n"
+        f"Make sure you run Streamlit from the **project root**:\n"
+        f"```\nstreamlit run Frontend/streamlit_app_final.py\n```"
+    )
+    st.code(traceback.format_exc())
+    st.stop()
 
-# PDF folder
-PDF_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Data-Engineering", "data", "pdfs")
+# PDF folder — one level up from Frontend/ then into Data-Engineering
+PDF_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Data-Engineering", "data", "pdfs")
 
 # =============================================================================
 # CSS
@@ -256,8 +291,9 @@ def build_evidence_items(evidence_text: str) -> list:
 
 
 def generate_highlighted_pdf(pdf_path: str, evidence_text: str):
+    # pdf_highlighter.py is now a sibling file inside Frontend/
     try:
-        from Frontend.pdf_highlighter import highlight_chunks
+        from pdf_highlighter import highlight_chunks
     except ImportError:
         return None, "pdf_highlighter.py not found or PyMuPDF not installed."
     try:

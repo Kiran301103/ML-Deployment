@@ -30,6 +30,14 @@ from sentence_transformers import SentenceTransformer
 from rank_bm25 import BM25Okapi
 from openai import OpenAI
 
+import sys
+
+# Anchor working directory to project root regardless of where the script is called from
+_THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+_PROJECT_ROOT = os.path.abspath(os.path.join(_THIS_DIR, "..", "..", ".."))  # goes up: Test2 -> Main -> Policy -> root
+os.chdir(_PROJECT_ROOT)
+if _PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, _PROJECT_ROOT)
 # =============================================================================
 # SECTION 0 — FREE LLM CONFIG
 # =============================================================================
@@ -37,7 +45,7 @@ from openai import OpenAI
 # export GROQ_API_KEY="gsk_..."
 
 LLM_CLIENT = OpenAI(
-    api_key  = os.environ.get("GROQ_API_KEY", ""),
+    api_key  = os.environ.get("GROQ_API_KEY", "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"),
     base_url = "https://api.groq.com/openai/v1",
 )
 LLM_MODEL = "llama-3.3-70b-versatile"   # llama-3.1-70b-versatile was decommissioned Dec 2024
