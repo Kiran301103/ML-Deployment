@@ -422,4 +422,4 @@ See the [LICENSE](./LICENSE) file for full details.
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-© 2026 Ashwin Prasanth, Konstantinos Sklavenitis, Kiran, Charalampos Theodoridis
+© 2026 , Kiran Meenakshi Sundaram, Ashwin Prasanth, Konstantinos Sklavenitis, Charalampos Theodoridis
