@@ -2,6 +2,9 @@
 
 A hybrid retrieval and ranking system for matching Irish health insurance plans to individual user needs. Combines semantic search, lexical search, a deterministic rule engine, and an LLM reranker into a single pipeline that produces ranked plan recommendations with plain-English explanations.
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
+
+This project is licensed under the Apache License 2.0.
 ---
 
 ## What it does
@@ -46,10 +49,20 @@ high_tech_flag       international_flag
 ```
 
 ---
+## Workflow
+
+<p align="center">
+  <img src="Docs/Media/workflow.png" alt="Figure 1. Workflow" width="500">
+</p>
 
 ## Architecture
 
 The pipeline has two sequential layers. The rule engine runs first — fast, deterministic, no API calls. The LLM only sees plans that passed the rule engine.
+
+<p align="center">
+  <img src="Docs/Media/architecture.png" alt="Architecture" width="500">
+</p>
+
 
 ```
 User query (natural language)
@@ -371,3 +384,42 @@ faiss_multi_provider_index.bin       ← FAISS index (auto-generated on first ru
 | `6` | `llm_rerank()` — LLM scoring with JSON repair |
 | `7` | `smart_search()` — full pipeline orchestrator |
 | `8` | Demo queries |
+
+## Evaluation Metrics
+
+The system is evaluated using latency and generation-performance metrics across multiple queries. These metrics help measure both system efficiency and user-perceived responsiveness.
+
+### Metrics explained
+
+| Metric | Description |
+|--------|-------------|
+| **Retrieval time** | Time required to fetch candidate plans using FAISS, BM25, and Reciprocal Rank Fusion (RRF). |
+| **LLM latency** | Total time taken by the LLM to generate the full response, measured from request submission to the final token. |
+| **TTFT (Time To First Token)** | Time between sending the request and receiving the first generated token. This reflects the initial processing delay before output begins. |
+| **TPOT (Time Per Output Token)** | Average time required to generate each output token. This measures token-level generation speed. |
+| **Throughput (tokens/sec)** | Number of tokens generated per second. Higher throughput indicates faster generation. |
+| **Output tokens** | Total number of tokens produced in the response. This reflects answer length and directly affects both latency and cost. |
+| **Total query time** | End-to-end system latency, including retrieval, rule-based filtering, and LLM reranking. |
+
+### Example average results across queries
+
+```text
+AVERAGE METRICS ACROSS QUERIES
+  Avg retrieval time:    0.0685 s
+  Avg LLM latency:       2.3353 s
+  Avg TTFT:              0.3290 s
+  Avg TPOT:              0.002133 s/token
+  Avg throughput:        468.7671 tok/s
+  Avg output tokens:     939.00
+  Avg total query time:  2.4062 
+```
+
+## License
+
+This project is licensed under the Apache License 2.0.
+
+See the [LICENSE](./LICENSE) file for full details.
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+© 2026 Ashwin Prasanth, Konstantinos Sklavenitis, Kiran, Charalampos Theodoridis
